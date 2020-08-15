@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
 import * as serviceWorker from './serviceWorker';
 
 class HelloWorldComp extends React.Component{
@@ -119,7 +118,10 @@ class InputComp extends React.Component {
 
   onSubmit = (event) => {
     event.preventDefault();
-    alert(`Your name is ${this.state.name}`)
+    const {firstName , lastName} = this.state;
+    const name = `${firstName} ${lastName}`.trim();
+    // alert(`Your name is ${this.state.name}`)
+    this.props.handleName(name);
   }
 
   render(){
@@ -128,11 +130,34 @@ class InputComp extends React.Component {
     const header = name ? <h1>Hello {name}</h1> : null
     return (
       <form onSubmit={this.onSubmit}>
-        {header}
+        {/* {header} */}
         firstName :: <input name="firstName" onChange={this.onChange} value={this.state.firstName} />
         <br></br>
         lastName :: <input name="lastName" onChange={this.onChange} value={this.state.lastName} />
+        <button type="submit">Submit</button>
       </form>
+    )
+  }
+}
+
+class App extends React.Component{
+  
+  state = {
+    name : ''
+  }
+
+  handleName = (name) =>{
+    this.setState({name});
+  }
+
+  render(){
+    const {name} = this.state;
+    const header = name ? <h1>Hello {name}</h1> : null
+    return (
+      <div>
+        {header}
+        <InputComp handleName={this.handleName}/>
+      </div>
     )
   }
 }
@@ -141,7 +166,7 @@ ReactDOM.render(
   <React.StrictMode>
     {/* <ItemEvent /> */}
     {/* <Toggle /> */}
-    <InputComp />
+    <App />
   </React.StrictMode>,
   document.getElementById('root')
 );
