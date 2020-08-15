@@ -10,20 +10,60 @@ class HelloWorldComp extends React.Component{
   }
 }
 
-function ItemList({numbers}){
-  return (<ul>{numbers.map(n => <li>{n}</li>)}</ul>)
+// class HelloWorldInComp extends React.Component{
+//   constructor(props){
+//     super(props);
+//     this.state = {
+//       tag: [],
+//       count: 1
+//     };
+//   }
+//   onIncrement = () => {
+//     this.setState((prevState) => ({count: prevState.count +1}))
+//   }
+
+//   onDeincrement = () => {
+//     this.setState((prevState) => ({count: prevState.count -1}))
+//   }
+
+//   render(){
+//     const numbers = [];
+//     for(let i = 1;i<=this.state.count; i++){
+//       numbers.push(<li>{i}</li>)
+//     }
+//     return <div>
+//       {this.state.count}
+//       <ul>
+//         {numbers}
+//       </ul>
+    
+//       <button onClick={this.onIncrement}>plus</button>
+//       <button onClick={this.onDeincrement}>minus</button>
+//     </div>
+//   }
+// }
+
+function Item(props){
+  return (<li>{props.n}</li>)
 }
 
-class HelloWorldInComp extends React.Component{
+function ItemList({numbers}){
+  return (<ul>{numbers.map(n => <Item key={n} n={Math.random()}/>)}</ul>)
+}
+class ItemEvent extends React.Component{
   constructor(props){
     super(props);
     this.state = {
-      tag: [],
-      count: 1
+      numbers: [1,2,3,4,5],
+      count: 0
     };
   }
   onIncrement = () => {
-    this.setState((prevState) => ({count: prevState.count +1}))
+    this.setState((prevState) => ({
+      count: prevState.count +1 ,
+      numbers: [...this.state.numbers , this.state.numbers.length +1]
+    }))
+    
   }
 
   onDeincrement = () => {
@@ -31,26 +71,18 @@ class HelloWorldInComp extends React.Component{
   }
 
   render(){
-    const numbers = [];
-    for(let i = 1;i<=this.state.count; i++){
-      numbers.push(<li>{i}</li>)
-    }
     return <div>
       {this.state.count}
-      <ul>
-        {numbers}
-      </ul>
+      <ItemList numbers={this.state.numbers}></ItemList>
     
       <button onClick={this.onIncrement}>plus</button>
       <button onClick={this.onDeincrement}>minus</button>
     </div>
   }
 }
-const numbers = [1,2,3,4,5]
 ReactDOM.render(
   <React.StrictMode>
-    <HelloWorldInComp />
-    <ItemList numbers={numbers}/>
+    <ItemEvent />
   </React.StrictMode>,
   document.getElementById('root')
 );
