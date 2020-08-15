@@ -4,10 +4,6 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-function Hello(props){
-return <h1>Hello world {props.title}</h1>;
-}
-
 class HelloWorldComp extends React.Component{
   render(){
   return <h1>Hello world class {this.props.title}</h1>
@@ -15,17 +11,33 @@ class HelloWorldComp extends React.Component{
 }
 
 class HelloWorldInComp extends React.Component{
+  constructor(props){
+    super(props);
+    this.state = {
+      count: 0
+    };
+  }
+  onIncrement = () => {
+    this.setState({count: this.state.count+1})
+  }
+
+  onDeincrement = () => {
+    this.setState((prevState) => ({count: prevState.count -1}))
+    this.setState((prevState) => ({count: prevState.count -1}))
+  }
+
   render(){
-  return <div>
-    <Hello title="In comp"/>
-    <HelloWorldComp title="In comp"/>
-  </div>
+    return <div>
+      <HelloWorldComp title="In comp"/>
+      <p><h1>{this.props.title} : {this.state.count}</h1></p>
+      <button onClick={this.onIncrement}>plus</button>
+      <button onClick={this.onDeincrement}>minus</button>
+    </div>
   }
 }
 
 ReactDOM.render(
   <React.StrictMode>
-    <Hello title="Hello Function"/>
     <HelloWorldComp title="xxx"/>
     <HelloWorldInComp title="xxx"/>
   </React.StrictMode>,
