@@ -10,30 +10,16 @@ class HelloWorldComp extends React.Component{
   }
 }
 
-function Car(props){
-  const isHonda = props.isHonda
-  const isToyota = props.isToyota
-  let car
-  if (isHonda){
-    car = 'Honda'
-  }
-  if (isToyota){
-    car = 'Toyota'
-  }
-  return <div>
-    <h1>This is band {car ? car : <span>xxxxx</span>}</h1>
-  </div>
-}
-
 class HelloWorldInComp extends React.Component{
   constructor(props){
     super(props);
     this.state = {
-      count: 0
+      tag: [],
+      count: 1
     };
   }
   onIncrement = () => {
-    this.setState({count: this.state.count+1})
+    this.setState((prevState) => ({count: prevState.count +1}))
   }
 
   onDeincrement = () => {
@@ -41,15 +27,16 @@ class HelloWorldInComp extends React.Component{
   }
 
   render(){
-    if(this.state.count % 2 === 1){
-      return <div><h1>mod 22222</h1>
-          <button onClick={this.onIncrement}>plus</button>
-          <button onClick={this.onDeincrement}>minus</button>
-        </div>
+    const numbers = [];
+    for(let i = 1;i<=this.state.count; i++){
+      numbers.push(<li>{i}</li>)
     }
     return <div>
-      <HelloWorldComp title="In comp"/>
-      <h1>{this.props.title} : {this.state.count}</h1>
+      {this.state.count}
+      <ul>
+        {numbers}
+      </ul>
+    
       <button onClick={this.onIncrement}>plus</button>
       <button onClick={this.onDeincrement}>minus</button>
     </div>
@@ -58,11 +45,7 @@ class HelloWorldInComp extends React.Component{
 
 ReactDOM.render(
   <React.StrictMode>
-    <HelloWorldComp title="xxx"/>
-    <HelloWorldInComp title="xxx"/>
-    <Car isHonda={true}/>
-    <Car isToyota={true}/>
-    <Car />
+    <HelloWorldInComp />
   </React.StrictMode>,
   document.getElementById('root')
 );
