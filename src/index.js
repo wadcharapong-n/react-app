@@ -162,12 +162,80 @@ class App extends React.Component{
   }
 }
 
+
+class App2 extends React.Component{
+  
+  state = {
+    count : 1
+  }
+
+  handleName = (name) =>{
+    this.setState({name});
+  }
+
+  render(){
+    return <> 
+      <button onClick={() => {this.setState({count:this.state.count+1})}}>Add</button>
+      {this.state.count < 10 && <LifeCycle count={this.state.count}/> }
+    </>
+  }
+}
+
+class LifeCycle extends React.Component{
+
+  constructor(props){
+    super(props);
+    console.log('constructor')
+    this.state = {
+      name: 'name'
+    }
+  }
+
+  static getDerivedStateFromProps(props,state){
+    console.log('DerivedStateFromProps');
+    console.log(props, state)
+    return { name: props.count % 2 === 0 ? 'even': 'odd'}
+  }
+  
+  componentDidMount(){
+    console.log('componentDidMount')
+  }
+
+  shouldComponentUpdate(nextProps,nextState){
+    if(nextProps.count > 5){
+      return false;
+    }else {
+      return true;
+    }
+  }
+
+  getSnapshotBeforeUpdate(prevProps, prevState){
+    return {
+      count: prevProps.count,
+    }
+  }
+  
+  componentDidUpdate(prevProps,prevState,snapShot){
+    console.log(snapShot)
+  }
+
+  componentWillUnmount(){
+    console.log('componentWillUnmount')
+  }
+
+  render(){
+    return (
+      <div>
+        {this.state.name}
+      </div>
+    )
+  }
+}
+
 ReactDOM.render(
-  <React.StrictMode>
-    {/* <ItemEvent /> */}
-    {/* <Toggle /> */}
-    <App />
-  </React.StrictMode>,
+  // <React.StrictMode>
+    <App2 />,
+  // </React.StrictMode>,
   document.getElementById('root')
 );
 
