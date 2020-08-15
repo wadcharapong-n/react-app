@@ -4,9 +4,18 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
+function WithoutJSX(){
+  return React.createElement('h1',{},'Without JSX')
+}
+
+function WithJSX(){
+  return <h1>With JSX</h1>
+}
+
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <WithJSX/>
+    <WithoutJSX/>
   </React.StrictMode>,
   document.getElementById('root')
 );
