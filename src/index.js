@@ -77,9 +77,32 @@ class ItemEvent extends React.Component{
     </div>
   }
 }
+
+class Toggle extends React.Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      isToggleOn: false,
+    }
+    this.handleClick.bind(this)
+  }
+
+  handleClick(){
+    this.setState((p) => ({isToggleOn: !p.isToggleOn}))
+  }
+
+  render(){
+    return (<div>
+      <button onClick={this.handleClick}>
+        {this.state.isToggleOn ? 'On':'Off'}
+      </button>
+    </div>)
+  }
+}
 ReactDOM.render(
   <React.StrictMode>
-    <ItemEvent />
+    {/* <ItemEvent /> */}
+    <Toggle />
   </React.StrictMode>,
   document.getElementById('root')
 );
