@@ -47,36 +47,33 @@ function Item(props){
   return (<li>{props.n}</li>)
 }
 
-function ItemList({numbers}){
-  return (<ul>{numbers.map(n => <Item key={n} n={Math.random()}/>)}</ul>)
+function ItemList({items}){
+  return (<ul>{items.map(n => <Item key={n} n={n}/>)}</ul>)
 }
 class ItemEvent extends React.Component{
   constructor(props){
     super(props);
     this.state = {
-      numbers: [1,2,3,4,5],
-      count: 0
+      items: [],
+      count: 0,
     };
   }
-  onIncrement = () => {
-    this.setState((prevState) => ({
-      count: prevState.count +1 ,
-      numbers: [...this.state.numbers , this.state.numbers.length +1]
-    }))
-    
-  }
 
-  onDeincrement = () => {
-    this.setState((prevState) => ({count: prevState.count -1}))
+  myChangeHandler = (event) => {
+    if (event.key === 'Enter') {
+      const value = event.target.value
+      this.setState((prevState) => ({
+        count: prevState.count +1 ,
+        items: [...this.state.items , value]
+      }))
+      event.target.value = '';
+    }
   }
 
   render(){
     return <div>
-      {this.state.count}
-      <ItemList numbers={this.state.numbers}></ItemList>
-    
-      <button onClick={this.onIncrement}>plus</button>
-      <button onClick={this.onDeincrement}>minus</button>
+      <input type="text" onKeyUp={this.myChangeHandler}/>
+      <ItemList items={this.state.items}></ItemList>
     </div>
   }
 }
