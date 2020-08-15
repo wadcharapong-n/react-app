@@ -10,6 +10,10 @@ class HelloWorldComp extends React.Component{
   }
 }
 
+function ItemList({numbers}){
+  return (<ul>{numbers.map(n => <li>{n}</li>)}</ul>)
+}
+
 class HelloWorldInComp extends React.Component{
   constructor(props){
     super(props);
@@ -42,10 +46,11 @@ class HelloWorldInComp extends React.Component{
     </div>
   }
 }
-
+const numbers = [1,2,3,4,5]
 ReactDOM.render(
   <React.StrictMode>
     <HelloWorldInComp />
+    <ItemList numbers={numbers}/>
   </React.StrictMode>,
   document.getElementById('root')
 );
