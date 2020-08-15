@@ -105,18 +105,35 @@ class InputComp extends React.Component {
   constructor(prop){
     super(prop);
     this.state = {
-      name : prop.name
+      firstName : '',
+      lastName : '',
     }
   }
   
   onChange = (event) => {
-    const name = event.target.value
-    this.setState({name})
+    const name = event.target.name
+    const value = event.target.value
+    this.setState({[name]: value})
 
   }
 
+  onSubmit = (event) => {
+    event.preventDefault();
+    alert(`Your name is ${this.state.name}`)
+  }
+
   render(){
-    return <input onChange={this.onChange} value={this.state.name}></input>
+    const {firstName , lastName} = this.state;
+    const name = `${firstName} ${lastName}`.trim();
+    const header = name ? <h1>Hello {name}</h1> : null
+    return (
+      <form onSubmit={this.onSubmit}>
+        {header}
+        firstName :: <input name="firstName" onChange={this.onChange} value={this.state.firstName} />
+        <br></br>
+        lastName :: <input name="lastName" onChange={this.onChange} value={this.state.lastName} />
+      </form>
+    )
   }
 }
 
@@ -124,7 +141,7 @@ ReactDOM.render(
   <React.StrictMode>
     {/* <ItemEvent /> */}
     {/* <Toggle /> */}
-    <InputComp name = {'this is a book'}/>
+    <InputComp />
   </React.StrictMode>,
   document.getElementById('root')
 );
