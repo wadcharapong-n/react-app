@@ -154,10 +154,10 @@ class App extends React.Component{
     const {name} = this.state;
     const header = name ? <h1>Hello {name}</h1> : null
     return (
-      <div>
+      <React.Fragment>
         {header}
         <InputComp handleName={this.handleName}/>
-      </div>
+      </React.Fragment>
     )
   }
 }
