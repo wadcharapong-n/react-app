@@ -4,18 +4,30 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-function WithoutJSX(){
-  return React.createElement('h1',{},'Without JSX')
+function Hello(props){
+return <h1>Hello world {props.title}</h1>;
 }
 
-function WithJSX(){
-  return <h1>With JSX</h1>
+class HelloWorldComp extends React.Component{
+  render(){
+  return <h1>Hello world class {this.props.title}</h1>
+  }
+}
+
+class HelloWorldInComp extends React.Component{
+  render(){
+  return <div>
+    <Hello title="In comp"/>
+    <HelloWorldComp title="In comp"/>
+  </div>
+  }
 }
 
 ReactDOM.render(
   <React.StrictMode>
-    <WithJSX/>
-    <WithoutJSX/>
+    <Hello title="Hello Function"/>
+    <HelloWorldComp title="xxx"/>
+    <HelloWorldInComp title="xxx"/>
   </React.StrictMode>,
   document.getElementById('root')
 );
