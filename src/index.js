@@ -99,10 +99,32 @@ class Toggle extends React.Component {
     </div>)
   }
 }
+
+class InputComp extends React.Component {
+
+  constructor(prop){
+    super(prop);
+    this.state = {
+      name : prop.name
+    }
+  }
+  
+  onChange = (event) => {
+    const name = event.target.value
+    this.setState({name})
+
+  }
+
+  render(){
+    return <input onChange={this.onChange} value={this.state.name}></input>
+  }
+}
+
 ReactDOM.render(
   <React.StrictMode>
     {/* <ItemEvent /> */}
-    <Toggle />
+    {/* <Toggle /> */}
+    <InputComp name = {'this is a book'}/>
   </React.StrictMode>,
   document.getElementById('root')
 );
