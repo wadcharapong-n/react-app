@@ -250,71 +250,88 @@ import * as serviceWorker from './serviceWorker';
 //   )
 // }
 
-const ColorContext =  React.createContext({})
-const FontSizeContent =  React.createContext({})
+// const ColorContext =  React.createContext({})
+// const FontSizeContent =  React.createContext({})
 
-class Todo extends React.Component{
-  static contextType = ColorContext;
+// class Todo extends React.Component{
+//   static contextType = ColorContext;
 
-  render(){
-    return (
-      <ColorContext.Consumer>
-        {(color) => (
-          <FontSizeContent.Consumer>
-            {(fontSize) => (
-              <p style={{color: this.context.color, fontSize : this.context.fontSize}}>{this.props.title}</p>
-            )}
-          </FontSizeContent.Consumer>
-        )}
-      </ColorContext.Consumer>
-    )
-  }
+//   render(){
+//     return (
+//       <ColorContext.Consumer>
+//         {(color) => (
+//           <FontSizeContent.Consumer>
+//             {(fontSize) => (
+//               <p style={{color: this.context.color, fontSize : this.context.fontSize}}>{this.props.title}</p>
+//             )}
+//           </FontSizeContent.Consumer>
+//         )}
+//       </ColorContext.Consumer>
+//     )
+//   }
+// }
+
+// function TodoList({color}){
+//   return (
+//     <div>
+//       <Todo color={color} title={'todo 1'}/>
+//       <Todo color={color} title={'todo 2'}/>
+//       <ToggleTodoButton />
+//     </div>
+//   )
+// }
+
+// function ToggleTodoButton(){
+//   return (
+//     <ColorContext.Consumer>
+//       {(context) => {
+//         return <button onClick={context.toggleColor}>{context.color}</button>
+//       }}
+//     </ColorContext.Consumer>
+//   )
+// }
+
+// class AppC extends React.Component{
+//   state = {
+//     color : 'pink',
+//     fontSize: 25,
+//     toggleColor : () => {
+//       this.setState(({color}) => ({ color : color === 'pink' ? 'gold':'pink'}))
+//     }
+//   }
+//   render(){
+//     const {color,fontSize,toggleColor} = this.state;
+//     return (
+//     <ColorContext.Provider value={{color,fontSize,toggleColor}}>
+//       <FontSizeContent.Provider value={{fontSize}} >
+//         <TodoList/>
+//       </FontSizeContent.Provider>
+//     </ColorContext.Provider>
+//     )
+//   }
+// }
+
+
+function Hello(){
+  return <h1>Hello world !!!</h1>
 }
 
-function TodoList({color}){
-  return (
-    <div>
-      <Todo color={color} title={'todo 1'}/>
-      <Todo color={color} title={'todo 2'}/>
-      <ToggleTodoButton />
-    </div>
-  )
-}
-
-function ToggleTodoButton(){
-  return (
-    <ColorContext.Consumer>
-      {(context) => {
-        return <button onClick={context.toggleColor}>{context.color}</button>
-      }}
-    </ColorContext.Consumer>
-  )
-}
-
-class AppC extends React.Component{
-  state = {
-    color : 'pink',
-    fontSize: 25,
-    toggleColor : () => {
-      this.setState(({color}) => ({ color : color === 'pink' ? 'gold':'pink'}))
+const withLoadingComponent = (WrappedComponent) => {
+  return class ComponentLoading extends React.Component{
+    render(){
+      if( this.props.isLoading){
+        return <div>Loading</div>
+      }
+      return <WrappedComponent />
     }
   }
-  render(){
-    const {color,fontSize,toggleColor} = this.state;
-    return (
-    <ColorContext.Provider value={{color,fontSize,toggleColor}}>
-      <FontSizeContent.Provider value={{fontSize}} >
-        <TodoList/>
-      </FontSizeContent.Provider>
-    </ColorContext.Provider>
-    )
-  }
-}
-
+} 
+const LoadingComponent = withLoadingComponent(Hello)
 
 ReactDOM.render(
   <React.StrictMode>
-    <AppC />
+    <LoadingComponent />
+    <LoadingComponent isLoading={true}/>
   </React.StrictMode>,
   document.getElementById('root')
 );
