@@ -4,6 +4,10 @@ import './index.css';
 import './App.css';
 import * as serviceWorker from './serviceWorker';
 import styled from 'styled-components';
+import TodoRedux from './redux/TodoRedux.jsx'
+import { createStore } from 'redux'
+import { Provider } from 'react-redux'
+import reducer from './redux/reducer';
 
 // class HelloWorldComp extends React.Component{
 //   render(){
@@ -252,8 +256,8 @@ import styled from 'styled-components';
 //   )
 // }
 
-const ColorContext =  React.createContext({})
-const FontSizeContent =  React.createContext({})
+// const ColorContext =  React.createContext({})
+// const FontSizeContent =  React.createContext({})
 
 // class Todo extends React.Component{
 //   static contextType = ColorContext;
@@ -332,105 +336,109 @@ const FontSizeContent =  React.createContext({})
 // }
 // const InputComponent = withInputComponent(Hello);
 
-class AppC extends React.Component{
-  state = {
-    color : 'pink',
-    fontSize: 25,
-    count: 0,
-    toggleColor : () => {
-      this.setState(({color}) => ({ color : color === 'pink' ? 'gold':'pink'}))
-    }
-  }
-  render(){
-    const {color,fontSize,toggleColor} = this.state;
-    return (
-    <ColorContext.Provider value={{color,fontSize,toggleColor}}>
-      <FontSizeContent.Provider value={{fontSize}} >
-      {/* {this.state.count > 5 ? null :<Example/> } */}
-      <Example/>
-      <button onClick={ () => this.setState({count : this.state.count +1})}>ClickInterval</button>
-      </FontSizeContent.Provider>
-    </ColorContext.Provider>
-    )
-  }
-}
+// class AppC extends React.Component{
+//   state = {
+//     color : 'pink',
+//     fontSize: 25,
+//     count: 0,
+//     toggleColor : () => {
+//       this.setState(({color}) => ({ color : color === 'pink' ? 'gold':'pink'}))
+//     }
+//   }
+//   render(){
+//     const {color,fontSize,toggleColor} = this.state;
+//     return (
+//     <ColorContext.Provider value={{color,fontSize,toggleColor}}>
+//       <FontSizeContent.Provider value={{fontSize}} >
+//       {/* {this.state.count > 5 ? null :<Example/> } */}
+//       <Example/>
+//       <button onClick={ () => this.setState({count : this.state.count +1})}>ClickInterval</button>
+//       </FontSizeContent.Provider>
+//     </ColorContext.Provider>
+//     )
+//   }
+// }
 
-function reducer(state,action){
-  switch (action.type){
-    case 'increment':
-      return state +1;
-    case 'decrement':
-      return state -1;
-    default:
-      return state;
-  }
-}
+// function reducer(state,action){
+//   switch (action.type){
+//     case 'increment':
+//       return state +1;
+//     case 'decrement':
+//       return state -1;
+//     default:
+//       return state;
+//   }
+// }
 
-function Example(props){
-  const [count, dispatchCount] = useReducer(reducer,0);
-  const [title, setTitle] = useState('');
-  const {color} = useContext(ColorContext);
-  const frontSizeContext = useContext(FontSizeContent);
+// function Example(props){
+//   const [count, dispatchCount] = useReducer(reducer,0);
+//   const [title, setTitle] = useState('');
+//   const {color} = useContext(ColorContext);
+//   const frontSizeContext = useContext(FontSizeContent);
 
-  // const [name, setName] = useState('');
-  // const name = useMemo(() => title + ' ' + count,[title, count]);
-  const name = useCallback((a) => title + ' ' + count + a,[title, count]);
+//   // const [name, setName] = useState('');
+//   // const name = useMemo(() => title + ' ' + count,[title, count]);
+//   const name = useCallback((a) => title + ' ' + count + a,[title, count]);
 
-  useEffect(() => {
-    console.log('effect 1 ');
-    // setName(title + ' ' + count);
-  },[title])
+//   useEffect(() => {
+//     console.log('effect 1 ');
+//     // setName(title + ' ' + count);
+//   },[title])
 
-  useEffect(() => {
-    console.log('effect 2 ');
-    const inteval = setInterval(() => {
-      console.log('inteval');
-    },2000)
-    return () => {
-      clearInterval(inteval)
-    }
-  },[])
+//   useEffect(() => {
+//     console.log('effect 2 ');
+//     const inteval = setInterval(() => {
+//       console.log('inteval');
+//     },2000)
+//     return () => {
+//       clearInterval(inteval)
+//     }
+//   },[])
 
-  return (
-    <div>
-      <p>{name(1)}</p>
-       <p>this title is :: {title}</p>
-      <input value={title} onChange={(event) => setTitle(event.target.value)} />
-      <p>{count}</p>
-      <button onClick={() => dispatchCount({type: 'increment'})}>plus</button>
-      <button onClick={() => dispatchCount({type: 'decrement'})}>minus</button>
-    </div>
-  )
-}
-const ItemListX = styled.li`
-  color: ${props => props.color ? props.color : "blue"};
-  font-size: 50px;
-`;
+//   return (
+//     <div>
+//       <p>{name(1)}</p>
+//        <p>this title is :: {title}</p>
+//       <input value={title} onChange={(event) => setTitle(event.target.value)} />
+//       <p>{count}</p>
+//       <button onClick={() => dispatchCount({type: 'increment'})}>plus</button>
+//       <button onClick={() => dispatchCount({type: 'decrement'})}>minus</button>
+//     </div>
+//   )
+// }
+// const ItemListX = styled.li`
+//   color: ${props => props.color ? props.color : "blue"};
+//   font-size: 50px;
+// `;
 
-const ItemListXPlus = styled(ItemListX)`
-  background-color: green;
-`;
+// const ItemListXPlus = styled(ItemListX)`
+//   background-color: green;
+// `;
 
-function ExampleHook(){
-  const [itemList, setItemList] = useState([]);
+// function ExampleHook(){
+//   const [itemList, setItemList] = useState([]);
 
-  const addItem = (event) => {
-    if (event.key === 'Enter'){
-      setItemList([...itemList,event.target.value])
-      event.target.value = ''
-    }
-  }
-  return (
-    <div>
-      <input onKeyUp={addItem}></input>
-      <ul>{itemList.map((item) => <ItemListXPlus>{item}</ItemListXPlus>)}</ul>
-    </div>
-  )
-}
+//   const addItem = (event) => {
+//     if (event.key === 'Enter'){
+//       setItemList([...itemList,event.target.value])
+//       event.target.value = ''
+//     }
+//   }
+//   return (
+//     <div>
+//       <input onKeyUp={addItem}></input>
+//       <ul>{itemList.map((item) => <ItemListXPlus>{item}</ItemListXPlus>)}</ul>
+//     </div>
+//   )
+// }
+
+const store = createStore(reducer);
 
 ReactDOM.render(
   <React.StrictMode>
-    <ExampleHook />
+    <Provider store={store}>
+      <TodoRedux />
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );
