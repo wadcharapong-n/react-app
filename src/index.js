@@ -232,27 +232,89 @@ import * as serviceWorker from './serviceWorker';
 //   }
 // }
 
-function ComponentExample(props){
-return <h2>{props.title}</h2>
+// function ComponentExample(props){
+// return <h2>{props.title}</h2>
+// }
+
+// function Composition(){
+//   const isEven = parseInt(Math.random() * 10 ,10) % 2 === 0;
+//   const element = isEven ? <h2>Hello even</h2> : <span>Odd</span>
+//   return (
+//     <>
+//       {element}
+//       <ComponentExample title={'Hello world 2'}>
+//         Hello world 3
+//       </ComponentExample>
+//       <h3>Hello world4</h3>
+//     </>
+//   )
+// }
+
+const ColorContext =  React.createContext({})
+const FontSizeContent =  React.createContext({})
+
+class Todo extends React.Component{
+  static contextType = ColorContext;
+
+  render(){
+    return (
+      <ColorContext.Consumer>
+        {(color) => (
+          <FontSizeContent.Consumer>
+            {(fontSize) => (
+              <p style={{color: this.context.color, fontSize : this.context.fontSize}}>{this.props.title}</p>
+            )}
+          </FontSizeContent.Consumer>
+        )}
+      </ColorContext.Consumer>
+    )
+  }
 }
 
-function Composition(){
-  const isEven = parseInt(Math.random() * 10 ,10) % 2 === 0;
-  const element = isEven ? <h2>Hello even</h2> : <span>Odd</span>
+function TodoList({color}){
   return (
-    <>
-      {element}
-      <ComponentExample title={'Hello world 2'}>
-        Hello world 3
-      </ComponentExample>
-      <h3>Hello world4</h3>
-    </>
+    <div>
+      <Todo color={color} title={'todo 1'}/>
+      <Todo color={color} title={'todo 2'}/>
+      <ToggleTodoButton />
+    </div>
   )
 }
 
+function ToggleTodoButton(){
+  return (
+    <ColorContext.Consumer>
+      {(context) => {
+        return <button onClick={context.toggleColor}>{context.color}</button>
+      }}
+    </ColorContext.Consumer>
+  )
+}
+
+class AppC extends React.Component{
+  state = {
+    color : 'pink',
+    fontSize: 25,
+    toggleColor : () => {
+      this.setState(({color}) => ({ color : color === 'pink' ? 'gold':'pink'}))
+    }
+  }
+  render(){
+    const {color,fontSize,toggleColor} = this.state;
+    return (
+    <ColorContext.Provider value={{color,fontSize,toggleColor}}>
+      <FontSizeContent.Provider value={{fontSize}} >
+        <TodoList/>
+      </FontSizeContent.Provider>
+    </ColorContext.Provider>
+    )
+  }
+}
+
+
 ReactDOM.render(
   <React.StrictMode>
-    <Composition />
+    <AppC />
   </React.StrictMode>,
   document.getElementById('root')
 );
