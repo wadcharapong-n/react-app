@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
@@ -9,38 +9,38 @@ import * as serviceWorker from './serviceWorker';
 //   }
 // }
 
-// // class HelloWorldInComp extends React.Component{
-// //   constructor(props){
-// //     super(props);
-// //     this.state = {
-// //       tag: [],
-// //       count: 1
-// //     };
-// //   }
-// //   onIncrement = () => {
-// //     this.setState((prevState) => ({count: prevState.count +1}))
-// //   }
+// class HelloWorldInComp extends React.Component{
+//   constructor(props){
+//     super(props);
+//     this.state = {
+//       tag: [],
+//       count: 1
+//     };
+//   }
+//   onIncrement = () => {
+//     this.setState((prevState) => ({count: prevState.count +1}))
+//   }
 
-// //   onDeincrement = () => {
-// //     this.setState((prevState) => ({count: prevState.count -1}))
-// //   }
+//   onDeincrement = () => {
+//     this.setState((prevState) => ({count: prevState.count -1}))
+//   }
 
-// //   render(){
-// //     const numbers = [];
-// //     for(let i = 1;i<=this.state.count; i++){
-// //       numbers.push(<li>{i}</li>)
-// //     }
-// //     return <div>
-// //       {this.state.count}
-// //       <ul>
-// //         {numbers}
-// //       </ul>
+//   render(){
+//     const numbers = [];
+//     for(let i = 1;i<=this.state.count; i++){
+//       numbers.push(<li>{i}</li>)
+//     }
+//     return <div>
+//       {this.state.count}
+//       <ul>
+//         {numbers}
+//       </ul>
     
-// //       <button onClick={this.onIncrement}>plus</button>
-// //       <button onClick={this.onDeincrement}>minus</button>
-// //     </div>
-// //   }
-// // }
+//       <button onClick={this.onIncrement}>plus</button>
+//       <button onClick={this.onDeincrement}>minus</button>
+//     </div>
+//   }
+// }
 
 // function Item(props){
 //   return (<li>{props.n}</li>)
@@ -312,9 +312,9 @@ import * as serviceWorker from './serviceWorker';
 // }
 
 
-function Hello(){
-  return <h1>Hello world !!!</h1>
-}
+// function Hello(){
+//   return <h1>Hello world !!!</h1>
+// }
 
 // const withLoadingComponent = (WrappedComponent) => {
 //   return class ComponentLoading extends React.Component{
@@ -333,27 +333,40 @@ function Hello(){
 // } 
 // const LoadingComponent = withLoadingComponent(Hello);
 
-const withInputComponent = (WrappedComponent) => {
-  return class InputText extends React.Component{
-    state = {
-      value : ''
-    }
-    render(){
-      return (
-        <>
-        <WrappedComponent/>
-        <p>Hello : {this.state.value}</p>
-        <input onKeyUp={(event) => (this.setState({value : event.target.value}))}></input>
-        </>
-      )
-    }
-  }
+// const withInputComponent = (WrappedComponent) => {
+//   return class InputText extends React.Component{
+//     state = {
+//       value : ''
+//     }
+//     render(){
+//       return (
+//         <>
+//         <WrappedComponent/>
+//         <p>Hello : {this.state.value}</p>
+//         <input onKeyUp={(event) => (this.setState({value : event.target.value}))}></input>
+//         </>
+//       )
+//     }
+//   }
+// }
+// const InputComponent = withInputComponent(Hello);
+
+function Example(props){
+  const [count, setCount] = useState(0);
+  const [title, setTitle] = useState('');
+  return (
+    <div>
+       <p>this title is :: {title}</p>
+      <input value={title} onChange={(event) => setTitle(event.target.value)} />
+      <p>{count}</p>
+      <button onClick={ () => setCount(count+1)}>Click</button>
+    </div>
+  )
 }
-const InputComponent = withInputComponent(Hello);
 
 ReactDOM.render(
   <React.StrictMode>
-    <InputComponent />
+    <Example title={'Hello'}/>
   </React.StrictMode>,
   document.getElementById('root')
 );
