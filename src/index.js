@@ -316,22 +316,44 @@ function Hello(){
   return <h1>Hello world !!!</h1>
 }
 
-const withLoadingComponent = (WrappedComponent) => {
-  return class ComponentLoading extends React.Component{
+// const withLoadingComponent = (WrappedComponent) => {
+//   return class ComponentLoading extends React.Component{
+//     render(){
+//       if(this.props.isLoading){
+//         return <div>Loading</div>
+//       }
+//       return (
+//         <>
+//           <Hello />
+//           <WrappedComponent />
+//         </>
+//       )
+//     }
+//   }
+// } 
+// const LoadingComponent = withLoadingComponent(Hello);
+
+const withInputComponent = (WrappedComponent) => {
+  return class InputText extends React.Component{
+    state = {
+      value : ''
+    }
     render(){
-      if( this.props.isLoading){
-        return <div>Loading</div>
-      }
-      return <WrappedComponent />
+      return (
+        <>
+        <WrappedComponent/>
+        <p>Hello : {this.state.value}</p>
+        <input onKeyUp={(event) => (this.setState({value : event.target.value}))}></input>
+        </>
+      )
     }
   }
-} 
-const LoadingComponent = withLoadingComponent(Hello)
+}
+const InputComponent = withInputComponent(Hello);
 
 ReactDOM.render(
   <React.StrictMode>
-    <LoadingComponent />
-    <LoadingComponent isLoading={true}/>
+    <InputComponent />
   </React.StrictMode>,
   document.getElementById('root')
 );
