@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
@@ -354,6 +354,11 @@ import * as serviceWorker from './serviceWorker';
 function Example(props){
   const [count, setCount] = useState(0);
   const [title, setTitle] = useState('');
+
+  useEffect(() => {
+    console.log("effect");
+  },[title])
+
   return (
     <div>
        <p>this title is :: {title}</p>
