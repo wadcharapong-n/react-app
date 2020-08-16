@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useContext, useReducer, useMemo ,useCallback} from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import './App.css';
 import * as serviceWorker from './serviceWorker';
+import styled from 'styled-components';
 
 // class HelloWorldComp extends React.Component{
 //   render(){
@@ -400,6 +402,14 @@ function Example(props){
     </div>
   )
 }
+const ItemListX = styled.li`
+  color: ${props => props.color ? props.color : "blue"};
+  font-size: 50px;
+`;
+
+const ItemListXPlus = styled(ItemListX)`
+  background-color: green;
+`;
 
 function ExampleHook(){
   const [itemList, setItemList] = useState([]);
@@ -413,7 +423,7 @@ function ExampleHook(){
   return (
     <div>
       <input onKeyUp={addItem}></input>
-      <ul>{itemList.map((item) => <li>{item}</li>)}</ul>
+      <ul>{itemList.map((item) => <ItemListXPlus>{item}</ItemListXPlus>)}</ul>
     </div>
   )
 }
