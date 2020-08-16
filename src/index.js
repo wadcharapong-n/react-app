@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext, useReducer, useMemo ,useCallback} from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
@@ -250,8 +250,8 @@ import * as serviceWorker from './serviceWorker';
 //   )
 // }
 
-// const ColorContext =  React.createContext({})
-// const FontSizeContent =  React.createContext({})
+const ColorContext =  React.createContext({})
+const FontSizeContent =  React.createContext({})
 
 // class Todo extends React.Component{
 //   static contextType = ColorContext;
@@ -290,27 +290,6 @@ import * as serviceWorker from './serviceWorker';
 //     </ColorContext.Consumer>
 //   )
 // }
-
-// class AppC extends React.Component{
-//   state = {
-//     color : 'pink',
-//     fontSize: 25,
-//     toggleColor : () => {
-//       this.setState(({color}) => ({ color : color === 'pink' ? 'gold':'pink'}))
-//     }
-//   }
-//   render(){
-//     const {color,fontSize,toggleColor} = this.state;
-//     return (
-//     <ColorContext.Provider value={{color,fontSize,toggleColor}}>
-//       <FontSizeContent.Provider value={{fontSize}} >
-//         <TodoList/>
-//       </FontSizeContent.Provider>
-//     </ColorContext.Provider>
-//     )
-//   }
-// }
-
 
 // function Hello(){
 //   return <h1>Hello world !!!</h1>
@@ -351,27 +330,97 @@ import * as serviceWorker from './serviceWorker';
 // }
 // const InputComponent = withInputComponent(Hello);
 
+class AppC extends React.Component{
+  state = {
+    color : 'pink',
+    fontSize: 25,
+    count: 0,
+    toggleColor : () => {
+      this.setState(({color}) => ({ color : color === 'pink' ? 'gold':'pink'}))
+    }
+  }
+  render(){
+    const {color,fontSize,toggleColor} = this.state;
+    return (
+    <ColorContext.Provider value={{color,fontSize,toggleColor}}>
+      <FontSizeContent.Provider value={{fontSize}} >
+      {/* {this.state.count > 5 ? null :<Example/> } */}
+      <Example/>
+      <button onClick={ () => this.setState({count : this.state.count +1})}>ClickInterval</button>
+      </FontSizeContent.Provider>
+    </ColorContext.Provider>
+    )
+  }
+}
+
+function reducer(state,action){
+  switch (action.type){
+    case 'increment':
+      return state +1;
+    case 'decrement':
+      return state -1;
+    default:
+      return state;
+  }
+}
+
 function Example(props){
-  const [count, setCount] = useState(0);
+  const [count, dispatchCount] = useReducer(reducer,0);
   const [title, setTitle] = useState('');
+  const {color} = useContext(ColorContext);
+  const frontSizeContext = useContext(FontSizeContent);
+
+  // const [name, setName] = useState('');
+  // const name = useMemo(() => title + ' ' + count,[title, count]);
+  const name = useCallback((a) => title + ' ' + count + a,[title, count]);
 
   useEffect(() => {
-    console.log("effect");
+    console.log('effect 1 ');
+    // setName(title + ' ' + count);
   },[title])
+
+  useEffect(() => {
+    console.log('effect 2 ');
+    const inteval = setInterval(() => {
+      console.log('inteval');
+    },2000)
+    return () => {
+      clearInterval(inteval)
+    }
+  },[])
 
   return (
     <div>
+      <p>{name(1)}</p>
        <p>this title is :: {title}</p>
       <input value={title} onChange={(event) => setTitle(event.target.value)} />
       <p>{count}</p>
-      <button onClick={ () => setCount(count+1)}>Click</button>
+      <button onClick={() => dispatchCount({type: 'increment'})}>plus</button>
+      <button onClick={() => dispatchCount({type: 'decrement'})}>minus</button>
+    </div>
+  )
+}
+
+function ExampleHook(){
+  const [itemList, setItemList] = useState([]);
+
+  const addItem = (event) => {
+    if (event.key === 'Enter'){
+      setItemList([...itemList,event.target.value])
+      event.target.value = ''
+    }
+  }
+  return (
+    <div>
+      <input onKeyUp={addItem}></input>
+      <ul>{itemList.map((item) => <li>{item}</li>)}</ul>
     </div>
   )
 }
 
 ReactDOM.render(
   <React.StrictMode>
-    <Example title={'Hello'}/>
+    <ExampleHook />
   </React.StrictMode>,
   document.getElementById('root')
 );
